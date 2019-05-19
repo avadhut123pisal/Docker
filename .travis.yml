@@ -4,4 +4,4 @@ services:
 before_install:
   - docker build -t vuejsnginx -f Dockerfile.Dev .
 script:
-  - docker run vuejsnginx npm run test -- --coverage
+  - docker run vuejsnginx npm run test:unit
