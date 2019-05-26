@@ -1,0 +1,29 @@
+sudo: required
+
+services:
+  - docker
+  
+before_install:
+  - docker build -t avadhutp123/react-test -f ./client/Dockerfile.Dev ./client
+  
+script:
+  - docker run avadhutp123/react-test npm test -- --coverage
+  
+after_success:
+  - docker build -t avadhutp123/multi-react ./client
+  - docker build -t avadhutp123/multi-nginx ./nginx
+  - docker build -t avadhutp123/multi-server ./server
+  - docker build -t avadhutp123/multi-worker ./worker  
+  
+  # login to docker hub
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  
+  # push images to docker hub
+  
+  - docker push avadhutp123/multi-react
+  - docker push avadhutp123/multi-nginx
+  - docker push avadhutp123/multi-server
+  - docker push avadhutp123/multi-worker
+  
+  
+  
