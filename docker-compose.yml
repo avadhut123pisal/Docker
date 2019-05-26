@@ -1,0 +1,47 @@
+version: '3'
+services:
+  postgres:
+    image: 'postgres:latest'
+  redis:
+    image: 'redis:latest'
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./react-app/nginx
+    ports:
+      - '3050:80'    
+  api:
+    build:
+      dockerfile: Dockerfile.Dev
+      context: ./react-app/server
+    volumes:
+      - ./react-app/server:/app
+      - /app/node_modules
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379    
+      - PGUSER=postgres
+      - PGHOST=postgres
+      - PGDATABASE=postgres
+      - PGPASSWORD=postgres_password 
+      - PGPORT=5432
+
+  client:
+    build:
+      dockerfile: Dockerfile.Dev
+      context: ./react-app/client
+    volumes:
+      - ./react-app/client:/app
+      - /app/node_modules   
+  worker:
+    build:
+      dockerfile: Dockerfile.Dev
+      context: ./react-app/worker
+    volumes:
+      - ./react-app/worker:/app
+      - /app/node_modules    
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379 
+      
