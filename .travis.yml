@@ -4,16 +4,16 @@ services:
   - docker
   
 before_install:
-  - docker build -t avadhutp123/react-test -f ./client/Dockerfile.Dev ./client
+  - docker build -t avadhutp123/react-test -f ./react-app/client/Dockerfile.Dev ./react-app/client
   
 script:
   - docker run avadhutp123/react-test npm test -- --coverage
   
 after_success:
-  - docker build -t avadhutp123/multi-react ./client
-  - docker build -t avadhutp123/multi-nginx ./nginx
-  - docker build -t avadhutp123/multi-server ./server
-  - docker build -t avadhutp123/multi-worker ./worker  
+  - docker build -t avadhutp123/multi-react ./react-app/client
+  - docker build -t avadhutp123/multi-nginx ./react-app/nginx
+  - docker build -t avadhutp123/multi-server ./react-app/server
+  - docker build -t avadhutp123/multi-worker ./react-app/worker  
   
   # login to docker hub
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
