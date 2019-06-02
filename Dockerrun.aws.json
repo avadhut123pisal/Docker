@@ -3,7 +3,7 @@
     "containerDefinitions": [
         {
             "name": "client",
-            "image": "avadhutp123/multi-client",
+            "image": "avadhutp123/multi-react",
             "hostname": "client",
             "essential": false,
             "memory": 128
